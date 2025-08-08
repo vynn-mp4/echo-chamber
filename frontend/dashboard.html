@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>📋 Council Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>📋 Council Dashboard</h1>
+    <p><a href="logout.html" style="font-size:14px">Logout</a></p>
+
+    <ul id="suggestionsList"></ul>
+  </div>
+
+  <script>
+    const API_BASE = 'http://localhost:5000';
+    const adminPass = localStorage.getItem('adminPass');
+
+    if (!localStorage.getItem('councilLoggedIn') || !adminPass) {
+      window.location.href = 'login.html';
+    }
+
+    async function loadSuggestions() {
+      try {
+        const res = await fetch(`${API_BASE}/api/suggestions?admin_pass=${adminPass}`);
+        if (res.status === 403) {
+          alert('❌ Session expired');
+          window.location.href = 'login.html';
+          return;
+        }
+        const messages = await res.json();
+
+        const list = document.getElementById('suggestionsList');
+        list.innerHTML = messages.length
+          ? messages.map(m => `
+            <li>
+              <small>${new Date(m.timestamp).toLocaleString()}</small>
+              <p>"${m.message}"</p>
+              <button onclick="deleteMsg(${m.id})">🗑️ Delete</button>
+            </li>
+          `).join('')
+          : '<li>No suggestions yet.</li>';
+      } catch (err) {
+        document.getElementById('suggestionsList').innerHTML = '<li>❌ Failed to load</li>';
+      }
+    }
+
+    async function deleteMsg(id) {
+      if (!confirm('Delete this suggestion?')) return;
+
+      await fetch(`${API_BASE}/api/suggestions/${id}`, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: adminPass }),
+      });
+      loadSuggestions();
+    }
+
+    loadSuggestions();
+  </script>
+</body>
+</html>
