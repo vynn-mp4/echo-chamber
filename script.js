@@ -5,7 +5,7 @@ document.getElementById('suggestionForm').addEventListener('submit', async (e) =
   if (!message) return;
 
   try {
-    const res = await fetch('/api/suggest', {
+    const res = await fetch('https://echo-chamber-backend.onrender.com/api/suggest', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ message }),

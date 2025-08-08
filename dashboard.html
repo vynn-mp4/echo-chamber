@@ -50,7 +50,7 @@
     async function deleteMsg(id) {
       if (!confirm('Delete this suggestion?')) return;
 
-      await fetch(`${API_BASE}/api/suggestions/${id}`, {
+      await fetch('https://echo-chamber-backend.onrender.com/api/suggest', {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ password: adminPass }),
