@@ -1,0 +1,6 @@
+node_modules/
+backend/node_modules/
+echo_chamber.db
+.env
+.DS_Store
+*.log
