@@ -51,7 +51,7 @@
       const email = document.getElementById('email').value;
       const password = document.getElementById('password').value;
 
-      const res = await fetch('https://echo-chamber-backend.onrender.com/api/suggest', {
+      const res = await fetch('https://echo-chamber-backend.onrender.com/api/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
@@ -60,7 +60,7 @@
       const data = await res.json();
       if (data.success) {
         localStorage.setItem('councilLoggedIn', 'true');
-        localStorage.setItem('adminPass', password); // Save for API calls
+        localStorage.setItem('adminPass', password);
         window.location.href = 'dashboard.html';
       } else {
         alert('❌ Invalid credentials');

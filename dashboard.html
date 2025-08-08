@@ -15,7 +15,7 @@
   </div>
 
   <script>
-    const API_BASE = 'http://localhost:5000';
+    const API_BASE = 'https://echo-chamber-backend.onrender.com';
     const adminPass = localStorage.getItem('adminPass');
 
     if (!localStorage.getItem('councilLoggedIn') || !adminPass) {
@@ -50,7 +50,7 @@
     async function deleteMsg(id) {
       if (!confirm('Delete this suggestion?')) return;
 
-      await fetch('https://echo-chamber-backend.onrender.com/api/suggest', {
+      await fetch(`${API_BASE}/api/suggestions/${id}`, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ password: adminPass }),
